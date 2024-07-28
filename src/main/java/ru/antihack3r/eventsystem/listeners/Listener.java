@@ -3,6 +3,9 @@ package ru.antihack3r.eventsystem.listeners;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
+/**
+ * Default implementation of {@link IListener}.
+ */
 public class Listener implements IListener {
 	
 	private final int priority;

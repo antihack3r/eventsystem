@@ -6,7 +6,7 @@
   </component>
   <component name="EntryPointsManager">
     <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="ru.antihack3r.eventsystem.EventHandler" />
+      <item index="0" class="java.lang.String" itemvalue="ru.antihack3r.eventsystem.EventListener" />
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

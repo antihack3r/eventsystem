@@ -2,30 +2,78 @@ package ru.antihack3r.eventsystem.bus;
 
 import ru.antihack3r.eventsystem.listeners.IListener;
 
-import java.util.List;
-
+/**
+ * An interface representing an event bus.
+ * @see EventBus
+ */
 public interface IEventBus {
 	
+	/**
+	 * Returns whether at least one event listener is currently registered for this event type.
+	 * @param eventType The event type to check for registered listeners.
+	 * @return whether the event is being listened for.
+	 */
 	boolean isListening(Class<?> eventType);
 	
+	/**
+	 * Posts an event to all event listeners that have been subscribed for this event.
+	 * @param event an event to post.
+	 * @return whether the event is cancelled, or {@code false} if the event class doesn't extend
+	 * {@link ru.antihack3r.eventsystem.CancellableEvent}
+	 */
 	boolean post(Object event);
 	
+	/**
+	 * Finds all correctly structured methods in the class and turns them into event listeners on this bus.
+	 * @param instance an object to find methods in.
+	 * @see ru.antihack3r.eventsystem.EventListener
+	 */
 	void subscribe(Object instance);
 	
-	void subscribe(Class<?> clasz);
+	/**
+	 * Finds all correctly structured methods in the class and turns them into event listeners on this bus.
+	 * @param clazz a class to find methods in.
+	 * @see ru.antihack3r.eventsystem.EventListener
+	 */
+	void subscribe(Class<?> clazz);
 	
-	void subscribe(List<IListener> listeners);
-	
+	/**
+	 * Subscribes an event listener on this bus.
+	 * @param listener an event listener to subscribe.
+	 */
 	void subscribe(IListener listener);
 	
+	/**
+	 * Finds all correctly structured methods in the class and removes them from the list of
+	 * event listeners on this bus.
+	 * @param instance an object to find methods in.
+	 * @see ru.antihack3r.eventsystem.EventListener
+	 */
 	void unsubscribe(Object instance);
 	
-	void unsubscribe(Class<?> clasz);
+	/**
+	 * Finds all correctly structured methods in the class and removes them from the list of
+	 * event listeners on this bus.
+	 * @param clazz a class to find methods in.
+	 * @see ru.antihack3r.eventsystem.EventListener
+	 */
+	void unsubscribe(Class<?> clazz);
 	
-	void unsubscribe(List<IListener> listeners);
-	
+	/**
+	 * Unsubscribes an event listener on this bus.
+	 * @param listener an event listener to unsubscribe.
+	 */
 	void unsubscribe(IListener listener);
 	
+	/**
+	 * Unsubscribes all event listeners that were subscribed to this event.
+	 * @param eventType the type of the event.
+	 */
+	void unsubscribeAll(Class<?> eventType);
+	
+	/**
+	 * Unsubscribes all event listeners from this bus.
+	 */
 	void clear();
 	
 }

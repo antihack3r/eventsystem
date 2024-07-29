@@ -137,8 +137,9 @@ public class EventBus implements IEventBus {
 	}
 	
 	private void makeListenersFor(List<IListener> listeners, Class<?> clazs, Object instance) {
-		for (Method method: clazs.getMethods()) {
+		for (Method method: clazs.getDeclaredMethods()) {
 			if (this.isValid(method)) {
+				method.setAccessible(true);
 				EventListener anno = method.getAnnotation(EventListener.class);
 				listeners.add(new Listener(anno.priority(), anno.receiveCancelled(), method, instance));
 			}

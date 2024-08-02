@@ -24,7 +24,7 @@ public @interface EventListener {
 	
 	/**
 	 * The higher the number, the sooner the listener will be called.
-	 * @return an event priority of this listener.
+	 * @return event priority of this listener.
 	 * @see EventPriority
 	 */
 	int priority() default EventPriority.MEDIUM;

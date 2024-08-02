@@ -61,12 +61,12 @@ public class EventBus implements IEventBus {
 	
 	@Override
 	public void subscribe(Object instance) {
-		this.subscribe(this.getListenersFor(instance.getClass(), instance));
+		this.subscribe(this.getOrMakeListenersFor(instance.getClass(), instance));
 	}
 	
 	@Override
 	public void subscribe(Class<?> clazz) {
-		this.subscribe(this.getListenersFor(clazz, null));
+		this.subscribe(this.getOrMakeListenersFor(clazz, null));
 	}
 	
 	public void subscribe(List<IListener> listeners) {
@@ -82,12 +82,12 @@ public class EventBus implements IEventBus {
 	
 	@Override
 	public void unsubscribe(Object instance) {
-		this.unsubscribe(this.getListenersFor(instance.getClass(), instance));
+		this.unsubscribe(this.getOrMakeListenersFor(instance.getClass(), instance));
 	}
 	
 	@Override
 	public void unsubscribe(Class<?> clazz) {
-		this.unsubscribe(this.getListenersFor(clazz, null));
+		this.unsubscribe(this.getOrMakeListenersFor(clazz, null));
 	}
 	
 	public void unsubscribe(List<IListener> listeners) {
@@ -116,7 +116,14 @@ public class EventBus implements IEventBus {
 		this.staticListenerCache.clear();
 	}
 	
-	private List<IListener> getListenersFor(Class<?> clazz, Object instance) {
+	/**
+	 * Gets listeners for each event listener method in the specified class from cache
+	 * or makes them and adds them to the cache.
+	 * @param clazz class to find listeners in.
+	 * @param instance instance of <tt>clazz</tt> if it needs one.
+	 * @return new list containing listeners from the specified class.
+	 */
+	private List<IListener> getOrMakeListenersFor(Class<?> clazz, Object instance) {
 		Function<Object, List<IListener>> func = o -> {
 			List<IListener> listeners = new CopyOnWriteArrayList<>();
 			
@@ -136,16 +143,26 @@ public class EventBus implements IEventBus {
 		return listeners;
 	}
 	
-	private void makeListenersFor(List<IListener> listeners, Class<?> clazs, Object instance) {
-		for (Method method: clazs.getDeclaredMethods()) {
+	/**
+	 * Makes listeners for each event listener method in the specified class and adds them to the specified list.
+	 * @param listeners list of listeners to add event listeners to.
+	 * @param clazz a class to find listeners in.
+	 * @param instance instance of <tt>clazz</tt> if it needs one.
+	 */
+	private void makeListenersFor(List<IListener> listeners, Class<?> clazz, Object instance) {
+		for (Method method: clazz.getMethods()) {
 			if (this.isValid(method)) {
-				method.setAccessible(true);
 				EventListener anno = method.getAnnotation(EventListener.class);
 				listeners.add(new Listener(anno.priority(), anno.receiveCancelled(), method, instance));
 			}
 		}
 	}
 	
+	/**
+	 * Checks whether the specified method could be an event listener.
+	 * @param method method to be checked.
+	 * @return <tt>true</tt> if the method could be an event listener, <tt>false</tt> otherwise.
+	 */
 	private boolean isValid(Method method) {
 		if (!method.isAnnotationPresent(EventListener.class)) return false;
 		if (method.getReturnType() != void.class) return false;
@@ -154,6 +171,11 @@ public class EventBus implements IEventBus {
 		return !method.getParameters()[0].getType().isPrimitive();
 	}
 	
+	/**
+	 * Inserts the specified listener into the specified list.
+	 * @param listeners list of listeners.
+	 * @param listener listener.
+	 */
 	private void insert(List<IListener> listeners, IListener listener) {
 		int i = 0;
 		for (; i < listeners.size(); i++) {
@@ -163,6 +185,11 @@ public class EventBus implements IEventBus {
 		listeners.add(i, listener);
 	}
 	
+	/**
+	 * Gets all listeners for the specified event type.
+	 * @param eventType event type.
+	 * @return all listeners for the specified event type.
+	 */
 	private List<IListener> getAllListenersFor(Class<?> eventType) {
 		List<IListener> list = new ArrayList<>();
 		

@@ -10,13 +10,13 @@ public interface IListener {
 	
 	/**
 	 * Invokes the listener.
-	 * @param event an event object that will be passed to the event handler.
+	 * @param event event object that will be passed to the event handler.
 	 */
 	void call(Object event);
 	
 	/**
 	 * Gets the priority of this event listener.
-	 * @return the priority of this event listener, as specified in {@link EventListener#priority()}
+	 * @return priority of this event listener, as specified in {@link EventListener#priority()}
 	 */
 	int getPriority();
 	
@@ -27,7 +27,7 @@ public interface IListener {
 	
 	/**
 	 * Gets the type of the event that this listener is registered for.
-	 * @return the type of the event that this listener is registered for.
+	 * @return type of the event that this listener is registered for.
 	 */
 	Class<?> getTargetEventType();
 

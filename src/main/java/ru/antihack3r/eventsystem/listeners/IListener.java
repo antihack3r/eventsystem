@@ -21,9 +21,9 @@ public interface IListener {
 	int getPriority();
 	
 	/**
-	 * @see EventListener#receiveCancelled()
+	 * @see EventListener#receiveCanceled()
 	 */
-	boolean shouldReceiveCancelled();
+	boolean shouldReceiveCanceled();
 	
 	/**
 	 * Gets the type of the event that this listener is registered for.

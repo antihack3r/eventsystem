@@ -1,6 +1,6 @@
 package ru.antihack3r.eventsystem.bus;
 
-import ru.antihack3r.eventsystem.CancellableEvent;
+import ru.antihack3r.eventsystem.CancelableEvent;
 import ru.antihack3r.eventsystem.EventListener;
 import ru.antihack3r.eventsystem.listeners.IListener;
 import ru.antihack3r.eventsystem.listeners.Listener;
@@ -31,7 +31,7 @@ public class EventBus implements IEventBus {
 	
 	@Override
 	public boolean post(Object event) {
-		return event instanceof CancellableEvent ? this.postCancelable(event): this.postNormal(event);
+		return event instanceof CancelableEvent ? this.postCancelable(event): this.postNormal(event);
 	}
 	
 	private boolean postNormal(Object event) {
@@ -45,18 +45,18 @@ public class EventBus implements IEventBus {
 	
 	private boolean postCancelable(Object event) {
 		List<IListener> listeners = this.listenerMap.get(event.getClass());
-		CancellableEvent _event = (CancellableEvent) event;
+		CancelableEvent _event = (CancelableEvent) event;
 		
 		if (listeners != null) {
-			_event.setCancelled(false);
+			_event.setCanceled(false);
 			
 			for (IListener listener: listeners) {
-				if (!_event.isCancelled() || listener.shouldReceiveCancelled())
+				if (!_event.isCanceled() || listener.shouldReceiveCanceled())
 					listener.call(_event);
 			}
 		}
 		
-		return _event.isCancelled();
+		return _event.isCanceled();
 	}
 	
 	@Override
@@ -153,7 +153,7 @@ public class EventBus implements IEventBus {
 		for (Method method: clazz.getMethods()) {
 			if (this.isValid(method)) {
 				EventListener anno = method.getAnnotation(EventListener.class);
-				listeners.add(new Listener(anno.priority(), anno.receiveCancelled(), method, instance));
+				listeners.add(new Listener(anno.priority(), anno.receiveCanceled(), method, instance));
 			}
 		}
 	}

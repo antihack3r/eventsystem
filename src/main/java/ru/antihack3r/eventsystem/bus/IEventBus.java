@@ -1,5 +1,6 @@
 package ru.antihack3r.eventsystem.bus;
 
+import ru.antihack3r.eventsystem.CancelableEvent;
 import ru.antihack3r.eventsystem.listeners.IListener;
 
 /**
@@ -18,8 +19,8 @@ public interface IEventBus {
 	/**
 	 * Posts the specified event to all event listeners that have been subscribed for this event.
 	 * @param event event to post.
-	 * @return whether the event is cancelled, or {@code false} if the event class doesn't extend
-	 * {@link ru.antihack3r.eventsystem.CancellableEvent}
+	 * @return whether the event is canceled, or {@code false} if the event class doesn't extend
+	 * {@link CancelableEvent}
 	 */
 	boolean post(Object event);
 	

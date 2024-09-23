@@ -9,14 +9,14 @@ import java.util.function.Consumer;
 public class Listener implements IListener {
 	
 	private final int priority;
-	private final boolean receiveCancelled;
+	private final boolean receiveCanceled;
 	private final Class<?> targetEventType;
 	private final Consumer<Object> executor;
 	
-	public Listener(int priority, boolean receiveCancelled, Method method, Object instance) {
+	public Listener(int priority, boolean receiveCanceled, Method method, Object instance) {
 		this.targetEventType = method.getParameters()[0].getType();
 		this.priority = priority;
-		this.receiveCancelled = receiveCancelled;
+		this.receiveCanceled = receiveCanceled;
 		this.executor = event -> {
 			try {
 				method.invoke(instance, event);
@@ -38,8 +38,8 @@ public class Listener implements IListener {
 	}
 	
 	@Override
-	public boolean shouldReceiveCancelled() {
-		return this.receiveCancelled;
+	public boolean shouldReceiveCanceled() {
+		return this.receiveCanceled;
 	}
 	
 	@Override

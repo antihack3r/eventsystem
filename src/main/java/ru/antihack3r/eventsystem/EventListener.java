@@ -30,9 +30,9 @@ public @interface EventListener {
 	int priority() default EventPriority.MEDIUM;
 	
 	/**
-	 * If set to {@code true}, the event listener will be called regardless of whether the event is cancelled.
-	 * @return {@code true} if the event listener should receive all cancelled events, {@code false} otherwise.
+	 * If set to {@code true}, the event listener will be called regardless of whether the event is canceled.
+	 * @return {@code true} if the event listener should receive all canceled events, {@code false} otherwise.
 	 */
-	boolean receiveCancelled() default false;
+	boolean receiveCanceled() default false;
 	
 }
